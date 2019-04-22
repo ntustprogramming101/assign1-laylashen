@@ -1,13 +1,17 @@
 float knightX=-80;
 float knightY=int(random(2,6))*80;
+//or float knightDistance=int(random(2,6));
 
-float robotX=random(160,560);
+//float robotX=random(160,560);
+float robotX=floor(random(2,8))*80;
 float robotY=floor(random(2,6))*80;
+//or float robotY=floor(random(2,6)*80);
 
 float lazerX=robotX+25;
 float lazerY=robotY+32;
 float lazerWeight=0;
-float lazerSpeed;
+float lazerSpeed=2;
+float lazerMax=40;
 
 PImage sky;
 PImage hog;
@@ -41,7 +45,7 @@ void draw() {
   //draw grass
   noStroke();
   fill(124,204,25);
-  rect(0,150,640,15);
+  rect(0,145,640,15);
 
   //play hog
   imageMode(CENTER);
@@ -58,18 +62,25 @@ void draw() {
   //knight animation
   imageMode(CORNERS);
   image(knight,knightX,knightY);
+  //or knightY=knightDistance*80;
   knightX+=5;
-  knightX%=640;
+  if(knightX>width){
+    knightX=-80;
+  }
   
   //play robot
   image(robot,robotX,robotY);
   
   //robot lazer
   fill(255,0,0);
-  rect(lazerX-40-lazerSpeed,lazerY,lazerWeight,10,5);
-  //no:rect(lazerX,lazerY,lazerWeight,10,5);
-  lazerSpeed+=2;
-  //lazerWeight-=2;
-  lazerWeight=min(lazerWeight+1,40);
-  lazerSpeed%=160;
+  //width change
+  rect(lazerX,lazerY,lazerWeight,10,5);
+  if(lazerWeight<40)lazerWeight+=2;
+   //lazer move
+  lazerX-=lazerSpeed;
+  //lazer restart
+  if(lazerX<=robotX-80*2){
+  lazerX=robotX+25;
+  lazerWeight=0;
+  }
 }
